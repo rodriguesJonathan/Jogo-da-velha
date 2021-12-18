@@ -1,4 +1,7 @@
 import colorama, os
+
+colorama.init()
+
 def limparTerminal():
 	os.system("cls||clear")
 
@@ -10,7 +13,7 @@ def mostrarTabuleiro():
 	print(espaco+"---|---|---")
 	print(espaco,tabela31,"|",tabela32,"|",tabela33,"\n")
 
-colorama.init()
+limparTerminal()
 
 espaco = " "*14
 print("\n"+espaco+"Jogo da velha!\n")

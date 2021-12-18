@@ -1,53 +1,85 @@
-import colorama
+import colorama, os
 colorama.init()
 
-espaco = "             "
-print("\n"+espaco+"Jogo da velha!\n")
-Jogador1,Jogador2,buffer = str(input("Nome do primeiro jogador: ")),str(input("Nome do segundo jogador: ")),str(input("Clique enter para iniciar o jogo.\n"))
-va,xa,oa,final,final2 =['X','O'], '\033[34m'+'X'+'\033[0;0m','\033[34m'+'O'+'\033[0;0m',espaco+'\033[31m'+Jogador1+" ganhou!\n"+espaco+"Fim de jogo."'\033[0;0m',espaco+'\033[31m'+ Jogador2+" ganhou!\n"+espaco+"Fim de jogo."'\033[0;0m'
+def limparTerminal():
+	os.system("cls||clear")
+
+def mostrarTabuleiro():
+	global espaco,tabela
+	print("\n"+espaco,tabela[0],"|",tabela[1],"|",tabela[2])
+	print(espaco+"---|---|---")
+	print(espaco,tabela[3],"|",tabela[4],"|",tabela[5])
+	print(espaco+"---|---|---")
+	print(espaco,tabela[6],"|",tabela[7],"|",tabela[8],"\n")
+
+limparTerminal()
+print("\n"+" "*13+"Jogo da velha!\n")
+
+Jogador1,Jogador2 = input("Nome do primeiro jogador: "),input("Nome do segundo jogador: ")
+jogadores = [Jogador1,Jogador2]
+
+espaco = " "*13
+tabela = [1,2,3,4,5,6,7,8,9]
+camposJaEscolhidos = []
+campoAserAnalisado = 0
+
+xAzul,oAzul = '\033[34m'+'X'+'\033[0;0m','\033[34m'+'O'+'\033[0;0m'
+xVermelho,oVermelho = '\033[31m'+'X'+'\033[0;0m','\033[31m'+'O'+'\033[0;0m'
+
+listaXO, listaAzulXO,listaVermelhaXO = ['X','O'], [xAzul,oAzul],[xVermelho,oVermelho]
+mensagemFinal = espaco+"\033[31m%s ganhou!\n"+espaco+"Fim de jogo."'\033[0;0m'
+ganhou,muda = 0,2
+
+buffer = input("Clique enter para iniciar o jogo.\n")
 if buffer == "configurar":
 	num = int(input("Digite o numero de espaços desejados\n"))
 	espaco = num*" "
-print("\n"+espaco+Jogador1+" será "+xa+"\n"+espaco+Jogador2+" será "+oa)
-a,x,xv,ov = 0,[1,2,3,4,5,6,7,8,9],'\033[31m'+'X'+'\033[0;0m','\033[31m'+'O'+'\033[0;0m'
-print("\n"+espaco,x[0],"|",x[1],"|",x[2],"\n"+espaco+"---|---|---\n"+espaco,x[3],"|",x[4],"|",x[5],"\n"+espaco+"---|---|---\n"+espaco,x[6],"|",x[7],"|",x[8],"\n")
-usado,xo,finais,xov,jogadores,ganhou,muda = [],[xa,oa],[final,final2],[xv,ov],[Jogador1,Jogador2],0,2
+
+print("\n"+espaco+Jogador1+" será "+xAzul+"\n"+espaco+Jogador2+" será "+oAzul)
+
+limparTerminal()
+mostrarTabuleiro()
 while ganhou < 1:
 	muda -= 2
 	while muda < 2:
-		nj = int(input(jogadores[muda]+", em que numero vai pôr "+va[muda]+"? "))
-		while nj in usado or nj < 1 or nj > 9:
+		campoEscolhido = int(input(jogadores[muda]+", em que numero vai pôr "+listaXO[muda]+"? "))
+		while campoEscolhido in camposJaEscolhidos or campoEscolhido < 1 or campoEscolhido > 9:
 			print("Opção inválida.\nOu esse espaço já foi preenchido,\nOu o numero não é de 1 à 9.")
-			nj = int(input("Por favor "+jogadores[muda]+", diga outro numero. "))
-		while nj != x[a]:
-			a += 1
-		x.pop(a),x.insert(a,xo[muda]),usado.append(nj)
-		a = 0
-		print("\n\n\n\n\n\n\n\n\n\n\n\n"+espaco,x[0],"|",x[1],"|",x[2],"\n"+espaco+"---|---|---\n"+espaco,x[3],"|",x[4],"|",x[5],"\n"+espaco+"---|---|---\n"+espaco,x[6],"|",x[7],"|",x[8],"\n\n\n\n\n\n")
-		j,o,n = 0,1,2
+			campoEscolhido = int(input("Por favor "+jogadores[muda]+", diga outro numero. "))
+		while campoEscolhido != tabela[campoAserAnalisado]:
+			campoAserAnalisado += 1
+		tabela.pop(campoAserAnalisado),tabela.insert(campoAserAnalisado,listaAzulXO[muda]),camposJaEscolhidos.append(campoEscolhido)
+		campoAserAnalisado = 0
+		limparTerminal()
+		mostrarTabuleiro()
+		#Verificação de vitórias na vertical
+		tabelaX1,tabelaX2,tabelaX3 = 0,1,2
 		for i in range(3):    
-			if x[j] == x[o] == x[n] == xo[muda]:
-				print(finais[muda])
-				x.pop(j),x.insert(j,xov[muda]),x.pop(o),x.insert(o,xov[muda]),x.pop(n),x.insert(n,xov[muda])
-				ganhou,muda = ganhou+1,muda+1
-			j,o,n = j+3,o+3,n+3
-		j,o,n = 0,3,6
+			if tabela[tabelaX1] == tabela[tabelaX2] == tabela[tabelaX3] == listaAzulXO[muda]:
+				tabela.pop(tabelaX1),tabela.insert(tabelaX1,listaVermelhaXO[muda]),tabela.pop(tabelaX2),tabela.insert(tabelaX2,listaVermelhaXO[muda]),tabela.pop(tabelaX3),tabela.insert(tabelaX3,listaVermelhaXO[muda])
+				ganhou,muda,nomeDoVencedor = ganhou+1,muda+1, jogadores[muda]
+			tabelaX1,tabelaX2,tabelaX3 = tabelaX1+3,tabelaX2+3,tabelaX3+3
+		#Verificação de vitórias na horinzontal
+		tabela1X,tabela2X,tabela3X = 0,3,6
 		for i in range(3):
-			if x[j] == x[o] == x[n] == xo[muda]:
-				print(finais[muda])
-				x.pop(j),x.insert(j,xov[muda]),x.pop(o),x.insert(o,xov[muda]),x.pop(n),x.insert(n,xov[muda])
-				ganhou,muda = ganhou+1,muda+1
-			j,o,n = j+1,o+1,n+1
-		if x[0] == x[4] == x[8] == xo[muda]:
-			print(finais[muda])
-			x.pop(0),x.insert(0,xov[muda]),x.pop(4),x.insert(4,xov[muda]),x.pop(8),x.insert(8,xov[muda])
-			ganhou,muda = ganhou+1,muda+1
-		elif x[2] == x[4] == x[6] == xo[muda]:
-			print(finais[muda])
-			x.pop(2),x.insert(2,xov[muda]),x.pop(4),x.insert(4,xov[muda]),x.pop(6),x.insert(6,xov[muda])
-			ganhou,muda = ganhou+1,muda+1
-		elif len(usado) == 9:
-			print(espaco+"Deu velha:")
-			ganhou,muda = ganhou+1,muda+1
+			if tabela[tabela1X] == tabela[tabela2X] == tabela[tabela3X] == listaAzulXO[muda]:
+				tabela.pop(tabela1X),tabela.insert(tabela1X,listaVermelhaXO[muda]),tabela.pop(tabela2X),tabela.insert(tabela2X,listaVermelhaXO[muda]),tabela.pop(tabela3X),tabela.insert(tabela3X,listaVermelhaXO[muda])
+				ganhou,muda,nomeDoVencedor = ganhou+1,muda+1, jogadores[muda]
+			tabela1X,tabela2X,tabela3X = tabela1X+1,tabela2X+1,tabela3X+1
+		#Verificação de vitórias na diagonal
+		if tabela[0] == tabela[4] == tabela[8] == listaAzulXO[muda]:
+			tabela.pop(0),tabela.insert(0,listaVermelhaXO[muda]),tabela.pop(4),tabela.insert(4,listaVermelhaXO[muda]),tabela.pop(8),tabela.insert(8,listaVermelhaXO[muda])
+			ganhou,muda,nomeDoVencedor = ganhou+1,muda+1, jogadores[muda]
+		elif tabela[2] == tabela[4] == tabela[6] == listaAzulXO[muda]:
+			tabela.pop(2),tabela.insert(2,listaVermelhaXO[muda]),tabela.pop(4),tabela.insert(4,listaVermelhaXO[muda]),tabela.pop(6),tabela.insert(6,listaVermelhaXO[muda])
+			ganhou,muda,nomeDoVencedor = ganhou+1,muda+1, jogadores[muda]
+		#Verificação de empate
+		if len(camposJaEscolhidos) == 9:
+			print(espaco+"Deu velha!!")
+			ganhou = 10
+			break
 		muda += 1
-print("\n"+espaco,x[0],"|",x[1],"|",x[2],"\n"+espaco+"---|---|---\n"+espaco,x[3],"|",x[4],"|",x[5],"\n"+espaco+"---|---|---\n"+espaco,x[6],"|",x[7],"|",x[8],"\n")
+if ganhou == 1:
+	limparTerminal()
+	print(mensagemFinal%nomeDoVencedor.lower().capitalize())
+	mostrarTabuleiro()
