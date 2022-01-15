@@ -1,0 +1,166 @@
+import os
+
+def limparTerminal():
+	os.system("cls||clear")
+
+def mostrarTabuleiro():
+	print("\n"+espaco,tabela11,"|",tabela12,"|",tabela13)
+	print(espaco+"---|---|---")
+	print(espaco,tabela21,"|",tabela22,"|",tabela23)
+	print(espaco+"---|---|---")
+	print(espaco,tabela31,"|",tabela32,"|",tabela33,"\n")
+
+limparTerminal()
+
+espaco = " "*14
+print("\n"+espaco+"Jogo da velha!\n")
+jogador1 = input("Nome de um jogador: ").title()
+jogador2 = input("Nome do outro jogador: ").title()
+buffer = input("Clique enter para iniciar o jogo.\n")
+
+
+limparTerminal()
+xAzul, oAzul = '\033[34m'+'X'+'\033[0;0m',    '\033[34m'+'O'+'\033[0;0m'
+xVerde, oVerde = '\033[32m'+'X'+'\033[0;0m', '\033[32m'+'O'+'\033[0;0m'
+mensagemFinal = '\033[32m%s ganhou!\nFim de jogo.\033[0;0m'
+
+if buffer == "conf":
+	num = int(input("Digite o numero de espaços desejados\n"))
+	espaco = num*" "
+	limparTerminal()
+print("\n"+espaco+jogador1+" será "+xAzul+"\n"+espaco+jogador2+" será "+oAzul)
+tabela11,tabela12,tabela13,tabela21,tabela22,tabela23,tabela31,tabela32,tabela33 = 1,2,3,4,5,6,7,8,9
+mostrarTabuleiro()
+campoTabelaUsado = []
+
+while True:
+	escolhaCampoJogador1 = int(input(jogador1+", em que numero vai pôr X? "))
+	while escolhaCampoJogador1 in campoTabelaUsado or escolhaCampoJogador1 < 1 or escolhaCampoJogador1 > 9:
+		print("Opção inválida.\nOu esse espaço já foi preenchido,\nOu o numero não é de 1 à 9.")
+		escolhaCampoJogador1 = int(input("Por favor "+jogador1+", diga outro numero: "))
+	#Alteração de variavel
+	if escolhaCampoJogador1 == 1:
+		tabela11 = xAzul
+	elif escolhaCampoJogador1 == 2:
+		tabela12 = xAzul
+	elif escolhaCampoJogador1 == 3:
+		tabela13 = xAzul
+	elif escolhaCampoJogador1 == 4:
+		tabela21 = xAzul
+	elif escolhaCampoJogador1 == 5:
+		tabela22 = xAzul
+	elif escolhaCampoJogador1 == 6:
+		tabela23 = xAzul
+	elif escolhaCampoJogador1 == 7:
+		tabela31 = xAzul
+	elif escolhaCampoJogador1 == 8:
+		tabela32 = xAzul
+	elif escolhaCampoJogador1 == 9:
+		tabela33 = xAzul
+	campoTabelaUsado.append(escolhaCampoJogador1)
+
+	#vericação de vitoria
+	if tabela11 == tabela21 == tabela31 == xAzul:
+		mensagemFinal= mensagemFinal%jogador1
+		tabela11 = tabela21 = tabela31 = xVerde
+		break
+	elif tabela12 == tabela22 == tabela32 == xAzul:
+		mensagemFinal= mensagemFinal%jogador1
+		tabela12 = tabela22 = tabela32 = xVerde
+		break
+	elif tabela13 == tabela23 == tabela33 == xAzul:
+		mensagemFinal= mensagemFinal%jogador1
+		tabela13 = tabela23 = tabela33 = xVerde
+		break
+	elif tabela11 == tabela12 == tabela13 == xAzul:
+		mensagemFinal= mensagemFinal%jogador1
+		tabela11 = tabela12 = tabela13 = xVerde
+		break
+	elif tabela21 == tabela22 == tabela23 == xAzul:
+		mensagemFinal= mensagemFinal%jogador1
+		tabela21 = tabela22 = tabela23 = xVerde
+		break
+	elif tabela31 == tabela32 == tabela33 == xAzul:
+		mensagemFinal= mensagemFinal%jogador1
+		tabela31 = tabela32 = tabela33 = xVerde
+		break
+	elif tabela11 == tabela22 == tabela33 == xAzul:
+		mensagemFinal= mensagemFinal%jogador1
+		tabela11 = tabela22 = tabela33 = xVerde
+		break
+	elif tabela13 == tabela22 == tabela31 == xAzul:
+		mensagemFinal= mensagemFinal%jogador1
+		tabela13 = tabela22 = tabela31 = xVerde
+		break
+	elif len(campoTabelaUsado) == 9:
+		mensagemFinal = espaco+"Deu velha:"
+		break
+
+	limparTerminal()
+	mostrarTabuleiro()
+
+
+	escolhaCampoJogador2 = int(input(jogador2+", em que numero vai pôr O? "))
+	while escolhaCampoJogador2 in campoTabelaUsado or escolhaCampoJogador2 < 1 or escolhaCampoJogador2 > 9:
+		print("Opção inválida.\nOu esse espaço já foi preenchido,\nOu o numero não é de 1 à 9.")
+		escolhaCampoJogador2 = int(input("Por favor"+jogador2+", diga outro numero. "))
+	if escolhaCampoJogador2 == 1:
+		tabela11 = oAzul
+	elif escolhaCampoJogador2 == 2:
+		tabela12 = oAzul
+	elif escolhaCampoJogador2 == 3:
+		tabela13 = oAzul
+	elif escolhaCampoJogador2 == 4:
+		tabela21 = oAzul
+	elif escolhaCampoJogador2 == 5:
+		tabela22 = oAzul
+	elif escolhaCampoJogador2 == 6:
+		tabela23 = oAzul
+	elif escolhaCampoJogador2 == 7:
+		tabela31 = oAzul
+	elif escolhaCampoJogador2 == 8:
+		tabela32 = oAzul
+	elif escolhaCampoJogador2 == 9:
+		tabela33 = oAzul
+	campoTabelaUsado.append(escolhaCampoJogador2)
+
+
+
+	if tabela11 == tabela21 == tabela31 == oAzul:
+		mensagemFinal = mensagemFinal%jogador2
+		tabela11 = tabela21 = tabela31 = oVerde
+		break
+	elif tabela12 == tabela22 == tabela32 == oAzul:
+		mensagemFinal = mensagemFinal%jogador2
+		tabela12 = tabela22 = tabela32 = oVerde
+		break
+	elif tabela13 == tabela23 == tabela33 == oAzul:
+		mensagemFinal = mensagemFinal%jogador2
+		tabela13 = tabela23 = tabela33 = oVerde
+		break
+	elif tabela11 == tabela12 == tabela13 == oAzul:
+		mensagemFinal = mensagemFinal%jogador2
+		tabela11 = tabela12 = tabela13 = oVerde
+		break
+	elif tabela21 == tabela22 == tabela23 == oAzul:
+		mensagemFinal = mensagemFinal%jogador2
+		tabela21 = tabela22 = tabela23 = oVerde
+		break
+	elif tabela31 == tabela32 == tabela33 == oAzul:
+		mensagemFinal = mensagemFinal%jogador2
+		tabela31 = tabela32 = tabela33 = oVerde
+		break
+	elif tabela11 == tabela22 == tabela33 == oAzul:
+		mensagemFinal = mensagemFinal%jogador2
+		tabela11 = tabela22 = tabela33 = oVerde
+		break
+	elif tabela13 == tabela22 == tabela31 == oAzul:
+		mensagemFinal = mensagemFinal%jogador2
+		tabela13 = tabela22 = tabela31 = oVerde
+		break
+	limparTerminal()
+	mostrarTabuleiro()
+
+limparTerminal()
+print(mensagemFinal)
+mostrarTabuleiro()
