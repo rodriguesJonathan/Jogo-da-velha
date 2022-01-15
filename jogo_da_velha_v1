@@ -3,7 +3,8 @@ import os
 def limparTerminal():
 	os.system("cls||clear")
 
-def mostrarTabuleiro():
+def mostrarTabuleiro(mensagemFinal=""):
+	print(mensagemFinal)
 	print("\n"+espaco,tabela11,"|",tabela12,"|",tabela13)
 	print(espaco+"---|---|---")
 	print(espaco,tabela21,"|",tabela22,"|",tabela23)
@@ -22,7 +23,7 @@ buffer = input("Clique enter para iniciar o jogo.\n")
 limparTerminal()
 xAzul, oAzul = '\033[34m'+'X'+'\033[0;0m',    '\033[34m'+'O'+'\033[0;0m'
 xVerde, oVerde = '\033[32m'+'X'+'\033[0;0m', '\033[32m'+'O'+'\033[0;0m'
-mensagemFinal = '\033[32m%s ganhou!\nFim de jogo.\033[0;0m'
+mensagemFinal = espaco+'\033[32m%s ganhou!\n'+espaco+'Fim de jogo.\033[0;0m'
 
 if buffer == "conf":
 	num = int(input("Digite o numero de espaços desejados\n"))
@@ -35,10 +36,11 @@ campoTabelaUsado = []
 
 while True:
 	escolhaCampoJogador1 = int(input(jogador1+", em que numero vai pôr X? "))
+	#vericação se o número já foi digitado ou se é inválido
 	while escolhaCampoJogador1 in campoTabelaUsado or escolhaCampoJogador1 < 1 or escolhaCampoJogador1 > 9:
 		print("Opção inválida.\nOu esse espaço já foi preenchido,\nOu o numero não é de 1 à 9.")
 		escolhaCampoJogador1 = int(input("Por favor "+jogador1+", diga outro numero: "))
-	#Alteração de variavel
+	#Substituição de variavel
 	if escolhaCampoJogador1 == 1:
 		tabela11 = xAzul
 	elif escolhaCampoJogador1 == 2:
@@ -57,6 +59,7 @@ while True:
 		tabela32 = xAzul
 	elif escolhaCampoJogador1 == 9:
 		tabela33 = xAzul
+	#Número escolhido será adicionado na lista campoTabelaUsado
 	campoTabelaUsado.append(escolhaCampoJogador1)
 
 	#vericação de vitoria
@@ -162,5 +165,4 @@ while True:
 	mostrarTabuleiro()
 
 limparTerminal()
-print(mensagemFinal)
-mostrarTabuleiro()
+mostrarTabuleiro(mensagemFinal)
